@@ -141,6 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } // если клаву escape нажали закрываем
     });
 
-    const modalTimerId = setTimeout(openModal, 5000);
+    const modalTimerId = setTimeout(openModal, 8000);// через 5 секунд запускать модальное окно
+
+    function showModalByScroll(){// показываем окно когда скролим вниз до конца
+        if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight){// если прокрученно до конца
+            openModal();
+            window.removeEventListener('scroll', showModalByScroll);
+        }// делаем это один раз  и убираем событие
+    }
+
+    window.addEventListener('scroll', showModalByScroll);
+
 
 });
