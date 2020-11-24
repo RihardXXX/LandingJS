@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Tabs Content
 
-    const tabs = document.querySelectorAll('.tabheader__item'); // один таб
+    const tabs = document.querySelectorAll('.tabheader__item'); // список
     const tabsContent = document.querySelectorAll('.tabcontent'); // контент табов
     const tabsParent = document.querySelector('.tabheader__items'); // общее меню
 
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalWindow.classList.add('show');// класс показа окна
         modalWindow.classList.remove('hide');
         document.body.style.overflow = 'hidden'; // при открытом окне задний фон не прокручивается
-        clearInterval(modalTimerId); // Если пользователь сам открыл окно, то не вызвывать его
+        // clearInterval(modalTimerId); // Если пользователь сам открыл окно, то не вызвывать его
     }
 
     function closeModal(){ // функция закрытия окна
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } // если клаву escape нажали закрываем
     });
 
-    const modalTimerId = setTimeout(openModal, 8000);// через 5 секунд запускать модальное окно
+    // const modalTimerId = setTimeout(openModal, 8000);// через 5 секунд запускать модальное окно
 
     function showModalByScroll(){// показываем окно когда скролим вниз до конца
         if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight){// если прокрученно до конца
@@ -151,6 +151,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('scroll', showModalByScroll);
+
+
+    // Используем классы для карточек
+
+    class MenuCard {
+        constructor(src, alt, title, description, price, parentSelector){
+            this.src = src;
+            this.alt = alt;
+            this.title = title;
+            this.description = description;
+            this.price = price;
+            this.parent = document.querySelector(parentSelector);
+            this.transfer = 80;
+            this.changeToRUB();// конвертируем в рубли
+        }
+
+        changeToRUB(){ // конвертер курса
+            this.price = +this.price * this.transfer;
+        }
+
+        render(){
+            const element = document.createElement('div');
+            element.innerHTML = `
+                <div class="menu__item">
+                    <img src=${this.src} alt=${this.alt}>
+                    <h3 class="menu__item-subtitle">${this.title}</h3>
+                    <div class="menu__item-descr">${this.description}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
+                    </div>
+                </div>
+            `;
+            this.parent.append(element);
+        }
+    }
+
+    new MenuCard(
+        "img/tabs/vegy.jpg",
+        "vegy",
+        'Меню "Фитнес"',
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        10,
+        '.menu .container'
+    ).render();
+
+    new MenuCard(
+        "img/tabs/elite.jpg",
+        "elite",
+        'Меню “Премиум”',
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        17,
+        '.menu .container'
+    ).render();
+
+    new MenuCard(
+        "img/tabs/post.jpg",
+        "post",
+        'Меню "Постное"',
+        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+        22,
+        '.menu .container'
+    ).render();
 
 
 });
