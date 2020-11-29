@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
 
 
@@ -108,13 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const buttonsClick = document.querySelectorAll('[data-modal]');
     const modalWindow = document.querySelector('.modal');
-    const modalClose = modalWindow.querySelector('[data-close]');
+
 
     function openModal(){// функция открытия окна
         modalWindow.classList.add('show');// класс показа окна
         modalWindow.classList.remove('hide');
         document.body.style.overflow = 'hidden'; // при открытом окне задний фон не прокручивается
-        // clearInterval(modalTimerId); // Если пользователь сам открыл окно, то не вызвывать его
+        clearInterval(modalTimerId); // Если пользователь сам открыл окно, то не вызвывать его
     }
 
     function closeModal(){ // функция закрытия окна
@@ -127,12 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', openModal);
     });
 
-    modalClose.addEventListener('click', closeModal);
-
     modalWindow.addEventListener('click', (event) => {
-        if(event.target == modalWindow){
+        if(event.target == modalWindow || event.target.getAttribute('data-close') == ''){
             closeModal();
-        }// если сзади окна нажи мышкой закрываем
+        }// если сзади окна нажи мышкой закрываем или на крестик
     });
 
     document.addEventListener('keydown', (event) => {
@@ -141,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } // если клаву escape нажали закрываем
     });
 
-    // const modalTimerId = setTimeout(openModal, 8000);// через 5 секунд запускать модальное окно
+    const modalTimerId = setTimeout(openModal, 50000);// через 5 секунд запускать модальное окно
 
     function showModalByScroll(){// показываем окно когда скролим вниз до конца
         if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight){// если прокрученно до конца
@@ -223,5 +222,89 @@ document.addEventListener('DOMContentLoaded', () => {
         'menu__item'
     ).render();
 
+    
+    
+    // FORMS
+
+    const forms = document.querySelectorAll('form'); //получаем все формы
+    const message = {
+        loading: 'img/form/spinner.svg',
+        succes: 'Скоро с вами свяжемся',
+        failure: 'что то пошло не так...'
+    };
+
+    forms.forEach(form => postData(form));//запускаем функцию к каждой форме
+
+    function postData(form){//
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();//отключаем перезагрузку
+            
+            const statusMessage = document.createElement('img');
+            statusMessage.src = message.loading;
+            statusMessage.style.cssText = `
+                display: block;
+                margin: auto;
+            `;
+            // добавляем в форму спиннер
+            form.insertAdjacentElement('afterend', statusMessage);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-Type','application/json');
+            const formData = new FormData(form);
+            
+            const obj = {}; // создаём объект для json отправки 
+            formData.forEach((value, key) => {
+                obj[key] = value;
+            });
+
+            const json = JSON.stringify(obj);// обычн объект в JSON объект
+
+            request.send(json); // отправляем json объект 
+
+            request.addEventListener('load', () => {
+                if(request.status === 200){
+                    console.log(request.response);
+                    showThanksModal(message.succes);
+                    
+                    form.reset(); // очистка полей формы после удачной загрузки
+                    statusMessage.remove();
+                }else{
+                    showThanksModal(message.failure);
+                }
+
+            });
+        });
+    }
+
+
+    function showThanksModal(message){ //функция показа благодарсности 
+        const prevModalDialog = document.querySelector('.modal__dialog');
+
+        prevModalDialog.classList.add('hide'); // прячем текущее модальное окно
+        openModal();
+
+        const thanksModal = document.createElement('div');
+        thanksModal.classList.add('modal__dialog');
+        thanksModal.innerHTML = `
+            <div class="modal__content">
+                <div class="modal__close">×</div>
+                <div class="modal__title">${message}</div>
+            </div>
+        `;
+
+        document.querySelector('.modal').append(thanksModal);
+        setTimeout(() => {
+            thanksModal.remove();
+            prevModalDialog.classList.add('show');
+            prevModalDialog.classList.remove('hide');
+            closeModal();
+        }, 4000);
+    }
+
+    //Fetch API
+    fetch('https://jsonplaceholder.typicode.com/todos/1')
+        .then(response => response.json())
+        .then(json => console.log(json));
 
 });
