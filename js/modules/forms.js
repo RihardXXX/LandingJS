@@ -1,11 +1,16 @@
-// const {
-//     module
-// } = require("../../webpack.config");
+import {
+    closeModal,
+    openModal
+} from './modals';
 
-function forms() {
+import {
+    postData
+} from '../services/services';
+
+function forms(formSelector, modalTimerId) {
     // FORMS
 
-    const forms = document.querySelectorAll('form'); //получаем все формы
+    const forms = document.querySelectorAll(formSelector); //получаем все формы
     const message = {
         loading: 'img/form/spinner.svg',
         succes: 'Скоро с вами свяжемся',
@@ -13,17 +18,6 @@ function forms() {
     };
 
     forms.forEach(form => bindPostData(form)); //запускаем функцию к каждой форме
-
-    const postData = async (url, data) => { // Постим запросы с формы
-        const res = await fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: data // JSON объект
-        });
-        return await res.json();
-    };
 
     function bindPostData(form) { //
         form.addEventListener('submit', (event) => {
@@ -62,7 +56,7 @@ function forms() {
         const prevModalDialog = document.querySelector('.modal__dialog');
 
         prevModalDialog.classList.add('hide'); // прячем текущее модальное окно
-        openModal();
+        openModal('.modal', modalTimerId);
 
         const thanksModal = document.createElement('div');
         thanksModal.classList.add('modal__dialog');
@@ -78,10 +72,10 @@ function forms() {
             thanksModal.remove();
             prevModalDialog.classList.add('show');
             prevModalDialog.classList.remove('hide');
-            closeModal();
+            closeModal('.modal');
         }, 4000);
     }
 
 }
 
-module.exports = forms;
+export default forms;

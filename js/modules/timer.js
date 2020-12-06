@@ -1,7 +1,5 @@
-function timer() {
+function timer(id, deadLine) {
     //Timer 
-
-    const deadLine = '2020-12-21';
 
     function getTimeRemaining(endTime) {
         const t = Date.parse(endTime) - Date.parse(new Date()); // осталось времени в милисекундах
@@ -53,8 +51,8 @@ function timer() {
 
     }
 
-    setClock('.timer', deadLine);
+    setClock(id, deadLine);
 
 }
 
-module.exports = timer;
+export default timer;

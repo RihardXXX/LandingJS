@@ -1,9 +1,9 @@
-function tabs() {
+function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, ActiveClass) {
     // Tabs Content
 
-    const tabsContent = document.querySelectorAll('.tabcontent'); // контент табов
-    const tabs = document.querySelectorAll('.tabheader__item'); // список
-    const tabsParent = document.querySelector('.tabheader__items'); // общее меню
+    const tabsContent = document.querySelectorAll(tabsSelector); // контент табов
+    const tabs = document.querySelectorAll(tabsContentSelector); // список
+    const tabsParent = document.querySelector(tabsParentSelector); // общее меню
 
 
     function hideTabcontent() { // стираем весь контент 
@@ -12,7 +12,7 @@ function tabs() {
             content.classList.remove('show', 'fade'); // класс показа плавно убираем
         });
         tabs.forEach(tab => {
-            tab.classList.remove('tabheader__item_active');
+            tab.classList.remove(ActiveClass);
         }); // снимаем выделение с меню
     }
 
@@ -44,4 +44,4 @@ function tabs() {
 
 }
 
-module.exports = tabs;
+export default tabs;

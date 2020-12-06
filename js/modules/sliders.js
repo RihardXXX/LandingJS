@@ -1,65 +1,24 @@
-function sliders() {
-    // Slider простой вариант слайда
-
-    // const sliders = document.querySelectorAll('.offer__slide');
-    // const current = document.querySelector('#current');
-    // const total = document.querySelector('#total');
-
-    // function hideSlide() { // удаляем слайды
-    //     sliders.forEach(slide => {
-    //         slide.classList.add('hide');
-    //         slide.classList.remove('show');
-    //     });
-    // }
-
-    // function showSlide(i = 0) { // показываем слайды
-    //     sliders[i].classList.add('show', 'fade');
-    //     sliders[i].classList.remove('hide');
-    //     current.textContent = getZero(i + 1);
-    //     total.textContent = getZero(sliders.length);
-    // }
-
-    // function hideShow(i) { // удаляем и показываем слайды по индексу
-    //     hideSlide();
-    //     showSlide(i);
-    // }
-
-    // function choiceSlide() { // выбираем индексы и запускаем показ слайдов
-    //     const next = document.querySelector('.offer__slider-next');
-    //     const prev = document.querySelector('.offer__slider-prev');
-    //     let i = 0;
-    //     next.addEventListener('click', () => {
-    //         i++;
-    //         if (i == sliders.length) {
-    //             i = 0;
-    //         }
-    //         hideShow(i);
-    //     });
-
-    //     prev.addEventListener('click', () => { //
-    //         i--;
-    //         if (i < 0) {
-    //             i = 3;
-    //         }
-    //         hideShow(i);
-    //     });
-    // }
-
-    // hideSlide(); // первый старт удаление слайдов
-    // showSlide(); // показ слайдов
-    // choiceSlide(); // выбор индекса слайда
-    //======================================
+function sliders({
+    container,
+    slide,
+    nextArrow,
+    prevArrow,
+    totalCounter,
+    currentCounter,
+    wrapper,
+    field
+}) {
 
     //
-    const slidesWrapper = document.querySelector('.offer__slider-wrapper');
-    const slidesField = document.querySelector('.offer__slider-inner');
+    const sliders = document.querySelectorAll(slide);
+    const slider = document.querySelector(container);
+    const next = document.querySelector(nextArrow);
+    const prev = document.querySelector(prevArrow);
+    const total = document.querySelector(totalCounter);
+    const current = document.querySelector(currentCounter);
+    const slidesWrapper = document.querySelector(wrapper);
     const width = window.getComputedStyle(slidesWrapper).width;
-    const sliders = document.querySelectorAll('.offer__slide');
-    const slider = document.querySelector('.offer__slider');
-    const next = document.querySelector('.offer__slider-next');
-    const prev = document.querySelector('.offer__slider-prev');
-    const current = document.querySelector('#current');
-    const total = document.querySelector('#total');
+    const slidesField = document.querySelector(field);
 
     let offset = 0;
     let slideIndex = 1;
@@ -199,6 +158,57 @@ function sliders() {
             goSlide();
         });
     });
+
+    // Slider простой вариант слайда
+
+    // const sliders = document.querySelectorAll('.offer__slide');
+    // const current = document.querySelector('#current');
+    // const total = document.querySelector('#total');
+
+    // function hideSlide() { // удаляем слайды
+    //     sliders.forEach(slide => {
+    //         slide.classList.add('hide');
+    //         slide.classList.remove('show');
+    //     });
+    // }
+
+    // function showSlide(i = 0) { // показываем слайды
+    //     sliders[i].classList.add('show', 'fade');
+    //     sliders[i].classList.remove('hide');
+    //     current.textContent = getZero(i + 1);
+    //     total.textContent = getZero(sliders.length);
+    // }
+
+    // function hideShow(i) { // удаляем и показываем слайды по индексу
+    //     hideSlide();
+    //     showSlide(i);
+    // }
+
+    // function choiceSlide() { // выбираем индексы и запускаем показ слайдов
+    //     const next = document.querySelector('.offer__slider-next');
+    //     const prev = document.querySelector('.offer__slider-prev');
+    //     let i = 0;
+    //     next.addEventListener('click', () => {
+    //         i++;
+    //         if (i == sliders.length) {
+    //             i = 0;
+    //         }
+    //         hideShow(i);
+    //     });
+
+    //     prev.addEventListener('click', () => { //
+    //         i--;
+    //         if (i < 0) {
+    //             i = 3;
+    //         }
+    //         hideShow(i);
+    //     });
+    // }
+
+    // hideSlide(); // первый старт удаление слайдов
+    // showSlide(); // показ слайдов
+    // choiceSlide(); // выбор индекса слайда
+    //======================================
 }
 
-module.exports = sliders;
+export default sliders;
